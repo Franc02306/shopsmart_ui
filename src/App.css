@@ -15,12 +15,23 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-/*MuiBox añadido*/
+/*MuiBox para pantalla completa añadido*/
 .MuiBox-root {
   width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.css-xm0xqa-MuiCardActions-root {
+  justify-content: center;
+}
+.css-8iab9z-MuiButtonBase-root-MuiButton-root {
+  font-weight: 200 !important;
+  background-color: rgb(114, 185, 114) !important;
+}
+.css-kux5or-MuiPaper-root-MuiCard-root {
+  height: 40%;
+  width: 20rem;
 }
 
 .MuiCard-root {

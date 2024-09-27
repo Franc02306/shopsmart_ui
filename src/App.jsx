@@ -1,23 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import {
-  Box,
-  Button,
-  Typography,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  TablePagination,
-  CardMedia,
-  TextField,
-  Grid2 as Grid,
-} from "@mui/material";
-import {
-  getProducts,
-  getProductByName,
-  getProductByPriceRange,
-} from "./Service/ProductService"; // Importar tus servicios
+import {VerDetalles} from "./modals/VerDetalles";
+import {Box,Button,Typography,Card,CardHeader,CardContent,CardActions,
+        TablePagination,CardMedia,TextField,Grid2 as Grid,} from "@mui/material";
+import {getProducts,getProductByName,getProductByPriceRange,} from "./Service/ProductService"; // Importar tus servicios
 
 const ProductList = () => {
   const [products, setProducts] = useState([]); // Lista de productos
@@ -27,6 +13,12 @@ const ProductList = () => {
   const [minPrice, setMinPrice] = useState(""); // Precio mínimo
   const [maxPrice, setMaxPrice] = useState(""); // Precio máximo
   const [errorMessage, setErrorMessage] = useState(""); // Para mostrar mensajes de error si falla algo
+  
+  //Controlar modal
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false); // Cierra el modal
 
   // Llamada al servicio para obtener productos
   const fetchProducts = async () => {
@@ -113,7 +105,7 @@ const ProductList = () => {
             sx={{ marginTop: 2 }}
             onClick={handleSearchByName}
           >
-            Buscar por nombre
+            Buscar producto
           </Button>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -140,7 +132,7 @@ const ProductList = () => {
             sx={{ marginTop: 2 }}
             onClick={handleSearchByPrice}
           >
-            Buscar por precio
+            Filtrar por precio
           </Button>
         </Grid>
       </Grid>
@@ -176,7 +168,7 @@ const ProductList = () => {
                       Descripción: {product.description || "Sin descripción"}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Precio: ${product.price}
+                      Precio: {product.price} soles
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Fabricante: {product.manufacturer}
@@ -192,16 +184,24 @@ const ProductList = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
+                    <Button className="btn-ver-detalles" size="small" color="primary" onClick={() => setSelectedProduct(product)}>
                       Ver detalles
                     </Button>
                   </CardActions>
+
                 </Card>
               </Grid>
             ))
         )}
       </Grid>
-
+{/* Invocar modal*/}
+{selectedProduct && (
+        <VerDetalles
+          product={selectedProduct}
+          open={Boolean(selectedProduct)}
+          handleClose={() => setSelectedProduct(null)}
+        />
+      )}
       {/* Paginación */}
       <TablePagination
         component="div"
