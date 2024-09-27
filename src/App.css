@@ -4,12 +4,23 @@ body {
   padding: 0;
   font-family: "Arial", sans-serif;
 }
-
+/*Root modificado*/
 #root {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/*MuiBox añadido*/
+.MuiBox-root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .MuiCard-root {
