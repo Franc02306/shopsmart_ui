@@ -96,7 +96,7 @@ const ProductList = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 4 }}>
+    <Box sx={{ flexGrow: 1, padding: 6 }}>
       {/* Filtros */}
       <Grid container spacing={2} sx={{ marginBottom: 4 }}>
         <Grid item xs={12} sm={6}>
@@ -164,7 +164,7 @@ const ProductList = () => {
           products
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((product, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
                 <Card
                   elevation={3}
                   sx={{ flexGrow: 1, borderRadius: "16px", minHeight: "400px" }}

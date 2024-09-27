@@ -2,18 +2,18 @@ body {
   background-color: #d4f5e9;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
 .MuiCard-root {
-  background-color: #fff9db;
+  background-color: #fff6c7;
 }
 
 .logo {
@@ -45,8 +45,10 @@ body {
 }
 
 .card {
-  padding: 2em;
   max-width: 100%;
+  margin: 1rem auto;
+  padding: 2rem;
+  border-radius: 16px;
 }
 
 .read-the-docs {
