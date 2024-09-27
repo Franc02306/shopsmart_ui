@@ -1,202 +1,219 @@
-import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
-
+import { useState, useEffect } from "react";
+import "./App.css";
 import {
   Box,
   Button,
   Typography,
-  Grid,
   Card,
   CardHeader,
   CardContent,
   CardActions,
-  IconButton,
-  Menu,
-  MenuItem,
-  Divider,
-  ListItemIcon,
-  TextField,
   TablePagination,
-  InputAdornment,
-  CardActionArea,
-  CardMedia
-} from '@mui/material';
+  CardMedia,
+  TextField,
+  Grid2 as Grid,
+} from "@mui/material";
+import {
+  getProducts,
+  getProductByName,
+  getProductByPriceRange,
+} from "./Service/ProductService"; // Importar tus servicios
 
-import LinkIcon from '@mui/icons-material/Link';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Swal from 'sweetalert2';
-
-const CommitteGroups = () => {
-  const [openCreateGroup, setOpenCreateGroup] = useState(false);
-  const [openUserList, setOpenUserList] = useState(false);
-  const [groups, setGroups] = useState([]);
-  const [filteredGroups, setFilteredGroups] = useState([]); // Grupos filtrados
-  const [users, setUsers] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [activeGroupId, setActiveGroupId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda
-
+const ProductList = () => {
+  const [products, setProducts] = useState([]); // Lista de productos
   const [page, setPage] = useState(0); // Página actual
-  const [rowsPerPage, setRowsPerPage] = useState(10); // Grupos por página
+  const [rowsPerPage, setRowsPerPage] = useState(10); // Productos por página
+  const [searchName, setSearchName] = useState(""); // Término de búsqueda por nombre
+  const [minPrice, setMinPrice] = useState(""); // Precio mínimo
+  const [maxPrice, setMaxPrice] = useState(""); // Precio máximo
+  const [errorMessage, setErrorMessage] = useState(""); // Para mostrar mensajes de error si falla algo
 
-  const handleCreateGroup = () => {
-    setSelectedGroup(null);
-    setOpenCreateGroup(true);
-    setIsEditMode(false);
+  // Llamada al servicio para obtener productos
+  const fetchProducts = async () => {
+    try {
+      const response = await getProducts();
+      setProducts(response.data);
+    } catch (error) {
+      setErrorMessage("Error al cargar los productos");
+      console.error("Error fetching products:", error);
+    }
   };
 
-  const handleMenuClick = (event, groupId) => {
-    setAnchorEl(event.currentTarget);
-    setActiveGroupId(groupId);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setActiveGroupId(null);
-  };
-
-  const getListGroups = async () => {
-    // Lógica para obtener los grupos
-    const dummyGroups = [
-      { id: 1, name_group: 'Grupo 1', description: 'Descripción del Grupo 1' },
-      { id: 2, name_group: 'Grupo 2', description: 'Descripción del Grupo 2' }
-    ];
-    setGroups(dummyGroups);
-    setFilteredGroups(dummyGroups);
-  };
-
-  const handleEditGroup = grupo => {
-    setSelectedGroup(grupo);
-    setIsEditMode(true);
-    setOpenCreateGroup(true);
-    handleMenuClose();
-  };
-
-  const handleViewUsers = grupo => {
-    setSelectedGroup(grupo);
-    setOpenUserList(true);
-    handleMenuClose();
-  };
-
-  const handleGroupSubmitSuccess = () => {
-    getListGroups();
-    setOpenCreateGroup(false);
-  };
-
+  // Cargar los productos cuando el componente se monta
   useEffect(() => {
-    getListGroups();
+    fetchProducts();
   }, []);
 
-  const handleDeleteGroup = async groupId => {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'No podrás revertir esto',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminarlo',
-      cancelButtonText: 'Cancelar'
-    }).then(async result => {
-      if (result.isConfirmed) {
-        // Lógica para eliminar grupo
-        Swal.fire('Eliminado', 'El grupo ha sido eliminado exitosamente', 'success');
-        getListGroups();
+  // Filtrar productos por nombre
+  const handleSearchByName = async () => {
+    try {
+      if (searchName.trim()) {
+        const response = await getProductByName(searchName);
+        console.log("Resultados de búsqueda por nombre:", response.data); // Para verificar la respuesta
+        setProducts(response.data);
+
+        // Si no se encontraron productos
+        if (response.data.length === 0) {
+          setErrorMessage("No se encontraron productos con ese nombre.");
+        } else {
+          setErrorMessage("");
+        }
+      } else {
+        fetchProducts(); // Si el campo está vacío, volvemos a obtener todos los productos
       }
-    });
+    } catch (error) {
+      setErrorMessage("Error al buscar productos por nombre.");
+      console.error("Error searching products by name:", error);
+    }
   };
 
-  const handleSearchChange = (event) => {
-    const searchValue = event.target.value.toLowerCase();
-    setSearchTerm(searchValue);
-    setFilteredGroups(groups.filter(group => group.name_group.toLowerCase().includes(searchValue)));
+  // Filtrar productos por rango de precios
+  const handleSearchByPrice = async () => {
+    try {
+      if (minPrice && maxPrice) {
+        const response = await getProductByPriceRange(minPrice, maxPrice);
+        setProducts(response.data);
+        setErrorMessage("");
+      } else {
+        setErrorMessage("Por favor, ingresa un rango de precios válido.");
+        fetchProducts(); // Si no se establece el rango de precios, mostramos todos los productos
+      }
+    } catch (error) {
+      setErrorMessage("Error al buscar productos por rango de precios.");
+      console.error("Error searching products by price range:", error);
+    }
   };
 
+  // Cambiar de página en la paginación
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // Cambiar la cantidad de productos por página
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   return (
-    <Box sx={{ padding: 4 }}>
-      <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
-        <Grid item xs={12} md>
+    <Box sx={{ flexGrow: 1, padding: 4 }}>
+      {/* Filtros */}
+      <Grid container spacing={2} sx={{ marginBottom: 4 }}>
+        <Grid item xs={12} sm={6}>
           <TextField
-            label="Buscar por título"
-            variant="outlined"
             fullWidth
-            value={searchTerm}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LinkIcon />
-                </InputAdornment>
-              ),
-            }}
+            label="Buscar por nombre"
+            variant="outlined"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
           />
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: 2 }}
+            onClick={handleSearchByName}
+          >
+            Buscar por nombre
+          </Button>
         </Grid>
-        <Grid item xs={12} md="auto">
-          <Button variant="contained" color="primary" onClick={handleCreateGroup}>
-            Crear grupo
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            label="Precio mínimo"
+            variant="outlined"
+            type="number"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            label="Precio máximo"
+            variant="outlined"
+            type="number"
+            value={maxPrice}
+            sx={{ marginTop: 2 }}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: 2 }}
+            onClick={handleSearchByPrice}
+          >
+            Buscar por precio
           </Button>
         </Grid>
       </Grid>
 
-      {/* Lista de grupos */}
-      <Grid container spacing={3}>
-        {filteredGroups.length === 0 ? (
-          <Box sx={{ textAlign: 'center', padding: 4 }}>
+      {/* Mensaje de error */}
+      {errorMessage && (
+        <Typography variant="body1" color="error" sx={{ marginBottom: 4 }}>
+          {errorMessage}
+        </Typography>
+      )}
+
+      {/* Lista de productos */}
+      <Grid container spacing={2} justifyContent="center">
+        {products.length === 0 ? (
+          <Box sx={{ textAlign: "center", padding: 4 }}>
             <Typography variant="body1" color="textSecondary">
-              No hay grupos existentes
+              No se encontraron productos disponibles
             </Typography>
           </Box>
         ) : (
-          filteredGroups.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((grupo, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <Card elevation={3} sx={{ maxWidth: 345, borderRadius: '16px' }}>
-                <CardHeader
-                  title={grupo.name_group}
-                  action={
-                    <IconButton onClick={e => handleMenuClick(e, grupo.id)}>
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                />
-                <CardContent>
-                  <Typography variant="body2" color="textSecondary">
-                    {grupo.description || 'Sin descripción'}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Ver Documentos
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))
+          products
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((product, index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <Card
+                  elevation={3}
+                  sx={{ flexGrow: 1, borderRadius: "16px", minHeight: "400px" }}
+                >
+                  <CardHeader title={product.productName} />
+                  <CardMedia height="200" alt={product.productName} />
+                  <CardContent>
+                    <Typography variant="body2" color="textSecondary">
+                      Descripción: {product.description || "Sin descripción"}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Precio: ${product.price}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Fabricante: {product.manufacturer}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Cantidad: {product.quantity}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Categoría: {product.category}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Estado: {product.status}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      Ver detalles
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
         )}
       </Grid>
 
+      {/* Paginación */}
       <TablePagination
         component="div"
-        count={filteredGroups.length}
+        count={products.length}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Productos por página"
       />
     </Box>
   );
 };
 
-export default CommitteGroups;
+export default ProductList;
