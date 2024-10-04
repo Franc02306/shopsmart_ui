@@ -22,6 +22,7 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+/*Arreglo de las cartas de productos en el grid*/
 .css-xm0xqa-MuiCardActions-root {
   justify-content: center;
 }

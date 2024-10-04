@@ -24,7 +24,7 @@ export const VerDetalles = ({ product, open, handleClose }) => {
 
       <DialogContent dividers>
         <Typography variant="body2">Descripción: {product.description}</Typography>
-        <Typography variant="body2">Precio: ${product.price}</Typography>
+        <Typography variant="body2">Precio: S/.{product.price}</Typography>
         <Typography variant="body2">Fabricante: {product.manufacturer}</Typography>
         <Typography variant="body2">Cantidad: {product.quantity}</Typography>
         <Typography variant="body2">Categoría: {product.category}</Typography>

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import {VerDetalles} from "./modals/VerDetalles";
+import { MenuItem } from "@mui/material";
 import {Box,Button,Typography,Card,CardHeader,CardContent,CardActions,
         TablePagination,CardMedia,TextField,Grid2 as Grid,} from "@mui/material";
-import {getProducts,getProductByName,getProductByPriceRange,} from "./Service/ProductService"; // Importar tus servicios
+import {getProducts,getProductByName,getProductByPriceRange,getProductsByCategory} from "./Service/ProductService"; // Importar tus servicios
 
 const ProductList = () => {
   const [products, setProducts] = useState([]); // Lista de productos
@@ -13,7 +14,10 @@ const ProductList = () => {
   const [minPrice, setMinPrice] = useState(""); // Precio mínimo
   const [maxPrice, setMaxPrice] = useState(""); // Precio máximo
   const [errorMessage, setErrorMessage] = useState(""); // Para mostrar mensajes de error si falla algo
-  
+ 
+  const categories = ['BOOKS', 'ELECTRONICS', 'CLOTHING', 'FURNITURE', 'TOYS', 'GROCERIES'];
+  const [selectedCategory, setSelectedCategory] = useState('');
+
   //Controlar modal
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [open, setOpen] = useState(false);
@@ -87,6 +91,19 @@ const ProductList = () => {
     setPage(0);
   };
 
+  const fetchProductsByCategory = async (category) => {
+    try {
+      if (category === "" || category === "MOSTRAR TODO") {
+        fetchProducts();
+      } else {
+        const response = await getProductsByCategory(category);
+        setProducts(response.data);
+      }
+    } catch (error) {
+      setErrorMessage("Error al cargar los productos por categoría.");
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1, padding: 6 }}>
       {/* Filtros */}
@@ -135,6 +152,31 @@ const ProductList = () => {
             Filtrar por precio
           </Button>
         </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            select
+            fullWidth
+            label="Categoría..."
+            value={selectedCategory}
+            onChange={(e) => {
+              const selectedValue = e.target.value;
+              setSelectedCategory(selectedValue);
+              fetchProductsByCategory(selectedValue);
+            }}
+            variant="outlined"
+            sx={{ minWidth: 200 }}
+          >
+            <MenuItem value="MOSTRAR TODO">
+              MOSTRAR TODO
+            </MenuItem>
+            {categories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </TextField>
+</Grid>
+
       </Grid>
 
       {/* Mensaje de error */}
@@ -168,7 +210,7 @@ const ProductList = () => {
                       Descripción: {product.description || "Sin descripción"}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Precio: {product.price} soles
+                      Precio: S/.{product.price}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Fabricante: {product.manufacturer}
