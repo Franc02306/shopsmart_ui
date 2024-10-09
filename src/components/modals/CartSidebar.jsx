@@ -5,7 +5,14 @@ const CartSidebar = ({ open, onClose, selectedProducts }) => {
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Box
-        sx={{ width: 300, padding: 2 }}
+        sx={{
+          width: 300,
+          padding: 2,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
         role="presentation"
         onClick={onClose}
         onKeyDown={onClose}
