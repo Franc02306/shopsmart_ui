@@ -20,7 +20,7 @@ import {
   getProductByName,
   getProductByPriceRange,
   getProductsByCategory,
-} from "../Service/ProductService"; // Importar tus servicios
+} from "../service/ProductService"; // Importar tus servicios
 
 const ProductList = () => {
   const [products, setProducts] = useState([]); // Lista de productos
