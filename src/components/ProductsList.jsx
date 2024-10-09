@@ -14,12 +14,16 @@ import {
   TextField,
   Grid2 as Grid,
 } from "@mui/material";
+
+// Importar ProdcutService
 import {
   getProducts,
   getProductByName,
   getProductByPriceRange,
   getProductsByCategory,
-} from "../service/ProductService"; // Importar tus servicios
+} from "../service/ProductService";
+
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]); // Lista de productos
@@ -132,10 +136,26 @@ const ProductList = () => {
       style={{
         maxWidth: "90%",
         margin: "auto",
-        border: "1px solid black",
         minHeight: "80vh",
+        position: "relative", // Mantén esto para el contenido
       }}
     >
+      {/* Botón del carrito fuera del contenedor */}
+      <Button
+        variant="contained"
+        color="primary"
+        style={{
+          position: "fixed", // Cambiamos a 'fixed' para que se posicione respecto a la ventana del navegador
+          top: "20px",
+          right: "20px",
+          zIndex: 1000, // Asegura que esté por encima de otros elementos
+          borderRadius: "20px"
+        }}
+      >
+        <ShoppingCartIcon />
+      </Button>
+
+      {/* El resto del contenido de ProductList */}
       {/* Filtros */}
       <div className="row mb-4">
         <div className="col-md-4">
@@ -229,23 +249,23 @@ const ProductList = () => {
                   </div>
                   <div className="card-body">
                     <Typography variant="body2" color="textSecondary">
-                      Descripción: {product.description || "Sin descripción"}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
                       Precio: S/.{product.price}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Fabricante: {product.manufacturer}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Cantidad: {product.quantity}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Categoría: {product.category}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
                       Estado: {product.status}
                     </Typography>
+                    {/* <Typography variant="body2" color="textSecondary">
+                      Descripción: {product.description || "Sin descripción"}
+                    </Typography> */}
+                    {/* <Typography variant="body2" color="textSecondary">
+                      Cantidad: {product.quantity}
+                    </Typography> */}
+                    {/* <Typography variant="body2" color="textSecondary">
+                      Categoría: {product.category}
+                    </Typography> */}
                   </div>
                   <div className="card-footer">
                     <Button
