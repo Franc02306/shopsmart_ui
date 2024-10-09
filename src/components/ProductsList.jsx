@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { VerDetalles } from "../modals/VerDetalles";
+import { VerDetalles } from "./modals/VerDetalles";
 import { MenuItem } from "@mui/material";
 import {
   Box,
@@ -24,6 +24,7 @@ import {
 } from "../service/ProductService";
 
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CartSidebar from "./modals/CartSidebar";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]); // Lista de productos
@@ -32,7 +33,10 @@ const ProductList = () => {
   const [searchName, setSearchName] = useState(""); // Término de búsqueda por nombre
   const [minPrice, setMinPrice] = useState(""); // Precio mínimo
   const [maxPrice, setMaxPrice] = useState(""); // Precio máximo
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Para mostrar mensajes de error si falla algo
+  const [selectedProducts, setSelectedProducts] = useState([]); // Lista de grupos seleccionados para el carrito
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Controlar el menu lateral del carrito
 
   const categories = [
     "BOOKS",
@@ -42,7 +46,6 @@ const ProductList = () => {
     "TOYS",
     "GROCERIES",
   ];
-  const [selectedCategory, setSelectedCategory] = useState("");
 
   //Controlar modal
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -130,6 +133,14 @@ const ProductList = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const addProductToCart = (product) => {
+    setSelectedProducts([...selectedProducts, product]);
+  };
+
   return (
     <div
       className="container my-5"
@@ -149,11 +160,15 @@ const ProductList = () => {
           top: "20px",
           right: "20px",
           zIndex: 1000, // Asegura que esté por encima de otros elementos
-          borderRadius: "20px"
+          borderRadius: "20px",
         }}
+        onClick={toggleSidebar}
       >
         <ShoppingCartIcon />
       </Button>
+
+      {/* Menú lateral del carrito */}
+      <CartSidebar open={sidebarOpen} onClose={toggleSidebar} selectedProducts={selectedProducts} />
 
       {/* El resto del contenido de ProductList */}
       {/* Filtros */}
