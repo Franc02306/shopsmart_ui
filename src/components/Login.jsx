@@ -46,10 +46,20 @@ const Login = () => {
     <Grid
       container
       className="h-100 d-flex align-items-center justify-content-center"
+      style={{ height: "100vh", width: "100vw", margin: "0" }} // Ajustar para ocupar toda la pantalla
     >
-      <div className="row w-100 h-100">
+      <div
+        className="row w-100 h-100"
+        style={{ display: "flex", width: "100%" }}
+      >
         {/* Columna izquierda: Imagen */}
-        <div className="col-md-6 d-flex justify-content-center align-items-center bg-light-gray">
+        <div
+          className="col-md-6 d-flex justify-content-center align-items-center bg-light-gray"
+          style={{
+            flex: 1, // Ocupa el 50% del ancho disponible
+            height: "100vh", // Asegura que ocupe toda la altura de la pantalla
+          }}
+        >
           <img
             src="/images/ShopSmart_Logo.png"
             alt="Imagen de login"
@@ -59,9 +69,23 @@ const Login = () => {
         </div>
 
         {/* Columna derecha: Formulario */}
-        <div className="col-md-6 d-flex flex-column justify-content-center align-items-center p-5">
+        <div
+          className="col-md-6 d-flex flex-column justify-content-center align-items-center p-5"
+          style={{
+            flex: 1, // Ocupa el 50% del ancho disponible
+            height: "100vh", // Asegura que ocupe toda la altura de la pantalla
+          }}
+        >
           <div className="flex flex-col gap-1">
-            <Typography style={{ fontWeight: "bold" }} variant="h4">
+            <Typography
+              style={{
+                fontWeight: "bold",
+                width: "450px",
+                marginBottom: "30px",
+                textAlign: "center",
+              }}
+              variant="h4"
+            >
               Bienvenido a ShopSmart
             </Typography>
           </div>
