@@ -89,13 +89,27 @@ const Login = () => {
             <Typography
               style={{
                 fontWeight: "bold",
-                width: "450px",
-                marginBottom: "30px",
+                width: "500px",
+                marginBottom: "20px",
                 textAlign: "center",
               }}
               variant="h4"
             >
-              Bienvenido a ShopSmart
+              {`¡Bienvenido a ShopSmart! 👋🏻`}
+            </Typography>
+          </div>
+
+					<div className="flex flex-col gap-1">
+            <Typography
+              style={{
+                width: "450px",
+                marginBottom: "20px",
+                textAlign: "center",
+								fontSize: "17px"
+              }}
+              variant="h6"
+            >
+              Ingresa tus datos credenciales
             </Typography>
           </div>
 
