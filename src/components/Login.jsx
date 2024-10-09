@@ -9,12 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+	const navigate = useNavigate();
 
   const handleLogin = () => {
     const credentials = [
@@ -30,7 +34,9 @@ const Login = () => {
       setSnackbarMessage("Inicio de sesión exitoso");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-      console.log("Inicio de sesión exitoso");
+			
+			localStorage.setItem("isAuthenticated", "true");
+			navigate("/products-list")
     } else {
       setSnackbarMessage("Usuario o contraseña incorrectos");
       setSnackbarSeverity("error");
@@ -109,7 +115,7 @@ const Login = () => {
               }}
               variant="h6"
             >
-              Ingresa tus datos credenciales
+              Ingresa tus credenciales
             </Typography>
           </div>
 
