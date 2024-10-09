@@ -58,13 +58,22 @@ const Login = () => {
           style={{
             flex: 1, // Ocupa el 50% del ancho disponible
             height: "100vh", // Asegura que ocupe toda la altura de la pantalla
+            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.7)), url('/images/ShopSmart_Side.png')`,
+            backgroundSize: "cover", // Ajusta la imagen de fondo para cubrir toda la sección
+            backgroundPosition: "center", // Centrar la imagen
           }}
         >
           <img
             src="/images/ShopSmart_Logo.png"
             alt="Imagen de login"
             className="img-fluid"
-            style={{ maxWidth: "80%", maxHeight: "80%" }}
+            style={{
+              maxWidth: "80%",
+              maxHeight: "100%",
+              border: '10px solid grey',
+              borderRadius: '20%',
+              backgroundColor: 'white'
+            }}
           />
         </div>
 
