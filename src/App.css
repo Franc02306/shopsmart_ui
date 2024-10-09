@@ -4,7 +4,7 @@ body {
   padding: 0;
   font-family: "Arial", sans-serif;
 }
-/*Root modificado*/
+
 #root {
   display: flex;
   justify-content: center;
@@ -15,14 +15,14 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-/*MuiBox para pantalla completa añadido*/
+
 .MuiBox-root {
   width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-/*Arreglo de las cartas de productos en el grid*/
+
 .css-xm0xqa-MuiCardActions-root {
   justify-content: center;
 }

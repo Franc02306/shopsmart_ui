@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "../App.css";
 import { VerDetalles } from "../modals/VerDetalles";
 import { MenuItem } from "@mui/material";
 import {
@@ -128,54 +127,28 @@ const ProductList = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 6 }}>
+    <div
+      className="container my-5"
+      style={{
+        maxWidth: "90%",
+        margin: "auto",
+        border: "1px solid black",
+        minHeight: "80vh",
+      }}
+    >
       {/* Filtros */}
-      <Grid container spacing={2} sx={{ marginBottom: 4 }}>
-        <Grid item xs={12} sm={6}>
+      <div className="row mb-4">
+        <div className="col-md-4">
           <TextField
             fullWidth
             label="Buscar por nombre"
             variant="outlined"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
+            size="small"
           />
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: 2 }}
-            onClick={handleSearchByName}
-          >
-            Buscar producto
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="Precio mínimo"
-            variant="outlined"
-            type="number"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="Precio máximo"
-            variant="outlined"
-            type="number"
-            value={maxPrice}
-            sx={{ marginTop: 2 }}
-            onChange={(e) => setMaxPrice(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: 2 }}
-            onClick={handleSearchByPrice}
-          >
-            Filtrar por precio
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </div>
+        <div className="col-md-3">
           <TextField
             select
             fullWidth
@@ -187,7 +160,7 @@ const ProductList = () => {
               fetchProductsByCategory(selectedValue);
             }}
             variant="outlined"
-            sx={{ minWidth: 200 }}
+            size="small"
           >
             <MenuItem value="MOSTRAR TODO">MOSTRAR TODO</MenuItem>
             {categories.map((category) => (
@@ -196,36 +169,65 @@ const ProductList = () => {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
-      </Grid>
+        </div>
+        <div className="col-md-2">
+          <TextField
+            fullWidth
+            label="Precio mínimo"
+            variant="outlined"
+            type="number"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            size="small"
+          />
+        </div>
+        <div className="col-md-2">
+          <TextField
+            fullWidth
+            label="Precio máximo"
+            variant="outlined"
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            size="small"
+          />
+        </div>
+        <div className="col-md-1 d-flex align-items-end">
+          <Button
+            variant="contained"
+            className="btn btn-primary"
+            onClick={handleSearchByName}
+          >
+            Buscar
+          </Button>
+        </div>
+      </div>
 
       {/* Mensaje de error */}
       {errorMessage && (
-        <Typography variant="body1" color="error" sx={{ marginBottom: 4 }}>
+        <Typography variant="body1" color="error" className="mb-4">
           {errorMessage}
         </Typography>
       )}
 
       {/* Lista de productos */}
-      <Grid container spacing={2} justifyContent="center">
+      <div className="row">
         {products.length === 0 ? (
-          <Box sx={{ textAlign: "center", padding: 4 }}>
+          <div className="text-center py-4">
             <Typography variant="body1" color="textSecondary">
               No se encontraron productos disponibles
             </Typography>
-          </Box>
+          </div>
         ) : (
           products
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((product, index) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
-                <Card
-                  elevation={3}
-                  sx={{ flexGrow: 1, borderRadius: "16px", minHeight: "400px" }}
-                >
-                  <CardHeader title={product.productName} />
-                  <CardMedia height="200" alt={product.productName} />
-                  <CardContent>
+              <div className="col-md-4 mb-4" key={index}>
+                <div className="card h-100 shadow-sm">
+                  <div className="card-header">
+                    <h5 className="card-title">{product.productName}</h5>
+                  </div>
+                  <div className="card-body">
                     <Typography variant="body2" color="textSecondary">
                       Descripción: {product.description || "Sin descripción"}
                     </Typography>
@@ -244,23 +246,22 @@ const ProductList = () => {
                     <Typography variant="body2" color="textSecondary">
                       Estado: {product.status}
                     </Typography>
-                  </CardContent>
-                  <CardActions>
+                  </div>
+                  <div className="card-footer">
                     <Button
-                      className="btn-ver-detalles"
-                      size="small"
-                      color="primary"
+                      className="btn btn-primary"
                       onClick={() => setSelectedProduct(product)}
                     >
                       Ver detalles
                     </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
+                  </div>
+                </div>
+              </div>
             ))
         )}
-      </Grid>
-      {/* Invocar modal*/}
+      </div>
+
+      {/* Modal */}
       {selectedProduct && (
         <VerDetalles
           product={selectedProduct}
@@ -268,6 +269,7 @@ const ProductList = () => {
           handleClose={() => setSelectedProduct(null)}
         />
       )}
+
       {/* Paginación */}
       <TablePagination
         component="div"
@@ -278,7 +280,7 @@ const ProductList = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelRowsPerPage="Productos por página"
       />
-    </Box>
+    </div>
   );
 };
 
