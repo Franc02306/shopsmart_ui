@@ -57,7 +57,7 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const response = await getProducts();
-      setProducts(response.data);
+      setProducts(response.data.data);
     } catch (error) {
       setErrorMessage("Error al cargar los productos");
       console.error("Error fetching products:", error);
@@ -260,7 +260,7 @@ const ProductList = () => {
               <div className="col-md-4 mb-4" key={index}>
                 <div className="card h-100 shadow-sm">
                   <div className="card-header">
-                    <h5 className="card-title">{product.productName}</h5>
+                    <h5 className="card-title">{product.name}</h5>
                   </div>
                   <div className="card-body">
                     <Typography variant="body2" color="textSecondary">
