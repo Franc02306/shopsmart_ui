@@ -10,13 +10,11 @@ export const getProductById = async (id) => {
 };
 
 export const getProductByName = async (name) => {
-  return API.get(`/api/v1/products/search`, {
-    params: { name: name }
-  });
+  return API.get(`/api/v1/products/products/${name}/products`);
 };
 
 export const getProductByPriceRange = async (minPrice, maxPrice) => {
-  return API.get(`/api/v1/products/by-price-range`, {
+  return API.get(`/api/v1/products/product/by-price-range`, {
     params: {
       minPrice: minPrice,
       maxPrice: maxPrice,

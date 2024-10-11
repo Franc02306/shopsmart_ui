@@ -74,8 +74,8 @@ const ProductList = () => {
     try {
       if (searchName.trim()) {
         const response = await getProductByName(searchName);
-        console.log("Resultados de búsqueda por nombre:", response.data); // Para verificar la respuesta
-        setProducts(response.data);
+        console.log("Resultados de búsqueda por nombre:", response.data.data); // Para verificar la respuesta
+        setProducts(response.data.data);
 
         // Si no se encontraron productos
         if (response.data.length === 0) {
@@ -97,7 +97,7 @@ const ProductList = () => {
     try {
       if (minPrice && maxPrice) {
         const response = await getProductByPriceRange(minPrice, maxPrice);
-        setProducts(response.data);
+        setProducts(response.data.data);
         setErrorMessage("");
       } else {
         setErrorMessage("Por favor, ingresa un rango de precios válido.");
@@ -302,6 +302,7 @@ const ProductList = () => {
           product={selectedProduct}
           open={Boolean(selectedProduct)}
           handleClose={() => setSelectedProduct(null)}
+          addToCart={addProductToCart}
         />
       )}
 

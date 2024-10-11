@@ -14,24 +14,51 @@ const CartSidebar = ({ open, onClose, selectedProducts }) => {
           justifyContent: "space-between",
         }}
         role="presentation"
-        onClick={onClose}
-        onKeyDown={onClose}
       >
         <Typography variant="h6" gutterBottom>
           Carrito de Compras
         </Typography>
-        {selectedProducts.length === 0 ? (
-          <Typography>No has seleccionado productos.</Typography>
-        ) : (
-          selectedProducts.map((product, index) => (
-            <Box key={index} sx={{ marginBottom: 2 }}>
-              <Typography variant="body1">{product.productName}</Typography>
-              <Typography variant="body2">
-                Precio: S/.{product.price}
-              </Typography>
-            </Box>
-          ))
-        )}
+        <Box
+          sx={{
+            flex: 1,
+            overflowY: "auto",
+            marginBottom: 2,
+          }}
+        >
+          {selectedProducts.length === 0 ? (
+            <Typography>No has seleccionado productos.</Typography>
+          ) : (
+            selectedProducts.map((product, index) => {
+              const imageUrl = product.images && product.images.length > 0 ? product.images[0].downloadUrl : null;
+              console.log("Producto:", product);
+              console.log("URL de la imagen:", imageUrl);
+              
+              return (
+                <Box key={index} sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={product.name}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        marginRight: 8,
+                      }}
+                    />
+                  ) : (
+                    <Typography variant="body2" color="textSecondary">
+                      Imagen no disponible
+                    </Typography>
+                  )}
+                  <Box>
+                    <Typography variant="body1">{product.name}</Typography>
+                    <Typography variant="body2">Precio: S/.{product.price}</Typography>
+                  </Box>
+                </Box>
+              );
+            })
+          )}
+        </Box>
         <Button variant="contained" color="primary" fullWidth>
           Finalizar Compra
         </Button>
