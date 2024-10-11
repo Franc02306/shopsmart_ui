@@ -23,8 +23,12 @@ import {
   getProductsByCategory,
 } from "../service/ProductService";
 
+import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
+// Importar ventanas modales
 import CartSidebar from "./modals/CartSidebar";
+import MenuSidebar from "./modals/MenuSidebar";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]); // Lista de productos
@@ -37,6 +41,13 @@ const ProductList = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Para mostrar mensajes de error si falla algo
   const [selectedProducts, setSelectedProducts] = useState([]); // Lista de grupos seleccionados para el carrito
   const [sidebarOpen, setSidebarOpen] = useState(false); // Controlar el menu lateral del carrito
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
+
+  //Controlar modal
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false); // Cierra el modal
 
   const categories = [
     "BOOKS",
@@ -46,12 +57,6 @@ const ProductList = () => {
     "TOYS",
     "GROCERIES",
   ];
-
-  //Controlar modal
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false); // Cierra el modal
 
   // Llamada al servicio para obtener productos
   const fetchProducts = async () => {
@@ -137,6 +142,10 @@ const ProductList = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  const toggleLeftSidebar = () => {
+    setLeftSidebarOpen(!leftSidebarOpen);
+  };
+
   const addProductToCart = (product) => {
     setSelectedProducts([...selectedProducts, product]);
   };
@@ -148,27 +157,39 @@ const ProductList = () => {
         maxWidth: "90%",
         margin: "auto",
         minHeight: "80vh",
-        position: "relative", // Mantén esto para el contenido
+        position: "relative",
       }}
     >
+      {/* Boton del menu desplegable izquierdo */}
+      <Button
+        variant="contained"
+        color="primary"
+        style={{
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          zIndex: 1000,
+          borderRadius: "20px",
+        }}
+        onClick={toggleLeftSidebar}
+      >
+        <MenuIcon />
+      </Button>
       {/* Botón del carrito fuera del contenedor */}
       <Button
         variant="contained"
         color="primary"
         style={{
-          position: "fixed", // Cambiamos a 'fixed' para que se posicione respecto a la ventana del navegador
+          position: "fixed",
           top: "20px",
           right: "20px",
-          zIndex: 1000, // Asegura que esté por encima de otros elementos
+          zIndex: 1000,
           borderRadius: "20px",
         }}
         onClick={toggleSidebar}
       >
         <ShoppingCartIcon />
       </Button>
-
-      {/* Menú lateral del carrito */}
-      <CartSidebar open={sidebarOpen} onClose={toggleSidebar} selectedProducts={selectedProducts} />
 
       {/* El resto del contenido de ProductList */}
       {/* Filtros */}
@@ -267,20 +288,11 @@ const ProductList = () => {
                       Precio: S/.{product.price}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Fabricante: {product.manufacturer}
+                      Fabricante: {product.brand}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Estado: {product.status}
+                      Inventario: {product.inventory}
                     </Typography>
-                    {/* <Typography variant="body2" color="textSecondary">
-                      Descripción: {product.description || "Sin descripción"}
-                    </Typography> */}
-                    {/* <Typography variant="body2" color="textSecondary">
-                      Cantidad: {product.quantity}
-                    </Typography> */}
-                    {/* <Typography variant="body2" color="textSecondary">
-                      Categoría: {product.category}
-                    </Typography> */}
                   </div>
                   <div className="card-footer">
                     <Button
@@ -315,6 +327,16 @@ const ProductList = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
         labelRowsPerPage="Productos por página"
       />
+
+      {/* Menú lateral del carrito */}
+      <CartSidebar
+        open={sidebarOpen}
+        onClose={toggleSidebar}
+        selectedProducts={selectedProducts}
+      />
+
+      {/* Menú lateral izquierdo */}
+      <MenuSidebar open={leftSidebarOpen} onClose={toggleLeftSidebar} />
     </div>
   );
 };

@@ -7,7 +7,7 @@ export const VerDetalles = ({ product, open, handleClose }) => {
     <Dialog open={open} onClose={handleClose}>
 
       <DialogTitle>
-        {product.productName}
+        {product.name}
         {/* Botón "X" para cerrar en la esquina superior derecha */}
         <IconButton
           aria-label="close"
@@ -25,10 +25,9 @@ export const VerDetalles = ({ product, open, handleClose }) => {
       <DialogContent dividers>
         <Typography variant="body2">Descripción: {product.description}</Typography>
         <Typography variant="body2">Precio: S/.{product.price}</Typography>
-        <Typography variant="body2">Fabricante: {product.manufacturer}</Typography>
-        <Typography variant="body2">Cantidad: {product.quantity}</Typography>
-        <Typography variant="body2">Categoría: {product.category}</Typography>
-        <Typography variant="body2">Estado: {product.status}</Typography>
+        <Typography variant="body2">Fabricante: {product.brand}</Typography>
+        <Typography variant="body2">Cantidad: {product.inventory}</Typography>
+        <Typography variant="body2">Categoría: {product.category?.name}</Typography>
       </DialogContent>
 
       {/* Botón "Agregar al carrito" centrado */}
