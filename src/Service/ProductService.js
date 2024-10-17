@@ -23,7 +23,7 @@ export const getProductByPriceRange = async (minPrice, maxPrice) => {
 };
 
 export const getProductsByCategory = async (category) => {
-  return API.get(`/api/v1/products/category/${category}`);
+  return API.get(`/api/v1/products/product/${category}/all/products`);
 };
 
 // SERVICIOS POST

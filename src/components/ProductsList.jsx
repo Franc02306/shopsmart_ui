@@ -50,12 +50,12 @@ const ProductList = () => {
   const handleClose = () => setOpen(false); // Cierra el modal
 
   const categories = [
-    "BOOKS",
-    "ELECTRONICS",
-    "CLOTHING",
-    "FURNITURE",
-    "TOYS",
-    "GROCERIES",
+    "Books",
+    "Electronics",
+    "Clothing",
+    "Furniture",
+    "Toys",
+    "Groceries",
   ];
 
   // Llamada al servicio para obtener productos
@@ -131,7 +131,7 @@ const ProductList = () => {
         fetchProducts();
       } else {
         const response = await getProductsByCategory(category);
-        setProducts(response.data);
+        setProducts(response.data.data);
       }
     } catch (error) {
       setErrorMessage("Error al cargar los productos por categoría.");
