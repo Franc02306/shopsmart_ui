@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   TextField,
   Button,
-  MenuItem,
   Snackbar,
   Alert,
   Grid2 as Grid,
@@ -18,7 +17,7 @@ const Login = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     const credentials = [
@@ -35,8 +34,8 @@ const Login = () => {
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
 			
-			localStorage.setItem("isAuthenticated", "true");
-			navigate("/products-list")
+      localStorage.setItem("isAuthenticated", "true");
+      navigate("/products-list");
     } else {
       setSnackbarMessage("Usuario o contraseña incorrectos");
       setSnackbarSeverity("error");
@@ -46,6 +45,11 @@ const Login = () => {
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
+  };
+
+  // Función para redirigir a la página de registro
+  const handleRegister = () => {
+    navigate("/register"); // Redirige al registro
   };
 
   return (
@@ -105,13 +109,13 @@ const Login = () => {
             </Typography>
           </div>
 
-					<div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <Typography
               style={{
                 width: "450px",
                 marginBottom: "20px",
                 textAlign: "center",
-								fontSize: "17px"
+                fontSize: "17px"
               }}
               variant="h6"
             >
@@ -140,9 +144,19 @@ const Login = () => {
             variant="contained"
             color="primary"
             onClick={handleLogin}
-            style={{ width: "300px" }}
+            style={{ width: "300px", marginBottom: "10px" }}
           >
             Iniciar Sesión
+          </Button>
+
+          {/* Botón para redirigir a la página de registro */}
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleRegister}
+            style={{ width: "300px" }}
+          >
+            Registrar Usuario
           </Button>
 
           {/* Snackbar para mostrar éxito o error */}

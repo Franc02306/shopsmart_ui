@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import "./App.css";
 import Login from "./components/Login";
 import ProductList from "./components/ProductsList";
+import UserRegistration from "./components/UserRegistration"; // Importa el componente de registro
 import PropTypes from "prop-types";
 
 const ProtectedRoute = ({ element }) => {
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<UserRegistration />} /> {/* Nueva ruta para registro */}
         <Route path="/products-list" element={<ProtectedRoute element={<ProductList />} />} />
       </Routes>
     </Router>
